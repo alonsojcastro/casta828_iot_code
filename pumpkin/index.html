@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!-- base copy from Ayo's github -->
+<html lang="en" style="visibility: visible;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Virtual Jack O' Lantern</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <!-- your server info -->
+        <script src="//192.168.1.122:8000/socket.io/socket.io.js" type="text/javascript"></script>
+        <script src="js/jquery.js" type="text/javascript"></script>
+        <script src="js/three.min.js"></script>
+
+  </head>
+  <body>
+    <!-- pumpkin to be replaced -->
+    <div id="pumpkin">
+      <img  src="images/pumpkin-day.svg" id="changer" /></a>
+    </div>
+
+    <!-- butons,incomplete-->
+    <div id="input">
+    Red: <input type="number" id="data.r" value="***" min="1" max="255">
+    Green: <input type="number" id="data.g" value="***" min="1" max="255">
+    Blue: <input type="number" id="data.b" value="***" min="1" max="255">
+    <button onclick="submit()" > Send it</button>
+    <p>Enter a Jack O Lantern Color</p>
+    </div>
+
+<style>
+  body {
+    background-color: #7ec0ee;/*daytime blue default*/
+    /*background-image: url("image/background-day.svg");*/
+    /*background-repeat: repeat; */
+
+
+  }
+  #pumpkin{
+    height: 50vh;
+    width: 50vw;
+    padding-top:3vh;
+    display: block;
+    margin: auto;
+    position: relative;
+  }
+
+  #input{
+    height: 10vh;
+    width: 50vw;
+    display: block;
+    margin: 21% auto auto 37%;
+    font-family: arial;
+    color: black;
+  }
+
+</style>
+
+<script>
+var socket;
+var url='192.168.1.122';
+var port=8000;//semi?
+
+socket = io.connect(url+':'+port);
+
+socket.on('toWeb', function (data) {
+        console.log(data);
+
+      var val = parseInt(data);
+      console.log('reading: ' + val);
+
+        if(val<1) {
+          console.log("Jack O Lantern is lit!");
+          //change background color
+          $("body").css("background-color","black");
+          $("#input").css("color","#FFCD0A");
+          //swap image ref.
+          $("#changer").attr('src',"images/pumpkin-night.svg");
+
+          //if everything works then get this to send rgb only when dark
+
+        } else {
+          console.log("Jack O Lantern is off.");
+          $("body").css("background-color","#7ec0ee");
+          $("#input").css("color","black");
+          //swap image ref.
+          $("#changer").attr("src", "images/pumpkin-day.svg");
+        }
+ });
+
+function submit(){
+
+    var rval = document.getElementById('data.r').value;
+    var gval = document.getElementById('data.g').value;
+    var bval = document.getElementById('data.b').value;
+    console.log("clicked");
+
+     socket.emit('submit',{rval,gval,bval});
+
+}
+
+
+//send data back to pi for light
+
+// function ifDark(data) {
+
+
+// });
+
+
+</script>
+
+
+  </body>
+
+</html>
