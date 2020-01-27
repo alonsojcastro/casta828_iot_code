@@ -15,7 +15,7 @@ import time
 
 to = 'casta828@newschool.edu'
 gmail_user = 'casta828@newschool.edu'
-gmail_password = 'Quienmassoyyo?'
+gmail_password = '****'
 smtpserver = smtplib.SMTP('smtp.gmail.com', 587)
 smtpserver.ehlo()
 smtpserver.starttls()
